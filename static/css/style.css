@@ -2099,6 +2099,14 @@ button.icon-cart span.count-style {
     width: 100%;
     transition: all .7s ease 0s;
 }
+.product1-img {
+    position: relative;
+    overflow: hidden;
+}
+.product1-img img {
+    width: 0.001%;
+    transition: all .7s ease 0s;
+}
 .product-action {
     background-color: #fff;
     box-shadow: 0 0.3px 7px rgba(0, 0, 0, 0.2);

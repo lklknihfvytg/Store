@@ -4,7 +4,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>{% block title %}Workshop | {% endblock title %}</title>
+        <title>Workshop | {% block title %}{% endblock title %}</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- Favicon -->
@@ -29,25 +29,16 @@
                     <div class="row">
                         <div class="col-xl-2 col-lg-3 col-md-4 col-sm-4 col-5">
                             <div class="logo pt-39">
-                                <a href="{% url 'index' %}"><img width="300" hight="150" alt="" src="{% static 'img/logo/logo.png' %}"></a>
+                                <a href="{% url 'index' %}"><img width="300" height="70" alt="" src="{% static 'img/logo/main_logo_dark.png' %}"></a>
                             </div>
                         </div>
                         <div class="col-xl-8 col-lg-7 d-none d-lg-block">
                             <div class="main-menu text-center">
                                 <nav>
                                     <ul>
-                                        <li><a href="{% url 'index' %}">HOME</a>
-                                            <!--<ul class="submenu">
-                                                <li>
-                                                    <a href="index.html">home version 1</a>
-                                                </li>
-                                                <li>
-                                                    <a href="index-2.html">home version 2</a>
-                                                </li>
-                                            </ul>-->
-                                        </li>
-                                        <li class="mega-menu-position"><a href="shop-page.html">Food</a>
-                                            <ul class="mega-menu">
+                                        {% block home %}{% endblock home %}
+                                        <li class="mega-menu-position"><a href="{% url 'shop:shop' %}">КАТАЛОГ</a>
+                                            <!--<ul class="mega-menu">
                                                 <li>
                                                     <ul>
                                                         <li class="mega-menu-title">Dogs Food</li>
@@ -83,13 +74,10 @@
                                                         <li><a href="shop-page.html"><img alt="" src="{% static 'img/banner/menu-img-4.jpg' %}"></a></li>
                                                     </ul>
                                                 </li>
-                                            </ul>
+                                            </ul>-->
                                         </li>
-                                        <li><a href="#">PAGES</a>
+                                        <!--<li><a href="#">PAGES</a>
                                             <ul class="submenu">
-                                                <li>
-                                                    <a href="{% url 'checks:checks' %}">checks</a>
-                                                </li>
                                                 <li>
                                                     <a href="shop-page.html">shop page</a>
                                                 </li>
@@ -117,7 +105,7 @@
 
                                                 {% if user.is_authenticated %}
                                                     <li>
-                                                        <!--{{ user.username }}-->
+                                                        {{ user.username }}
                                                         <a href="{% url 'authentication:logout' %}">logout</a>
                                                     </li>
                                                 {% else %}
@@ -130,8 +118,9 @@
                                                 {% endif %}
                                                 </li>
                                             </ul>
-                                        </li>
-                                        <li><a href="blog-leftsidebar.html">Blog</a>
+                                        </li>-->
+                                        <li><a href="blog-leftsidebar.html">Блог</a>
+                                            <!--
                                             <ul class="submenu">
                                                 <li>
                                                     <a href="blog.html">blog page</a>
@@ -142,10 +131,10 @@
                                                 <li>
                                                     <a href="blog-details.html">blog details</a>
                                                 </li>
-                                            </ul>
+                                            </ul>-->
                                         </li>
-                                        <li><a href="about-us.html">ABOUT</a></li>
-                                        <li><a href="contact.html">contact us</a></li>
+                                        <li><a href="{% url 'about' %}">Обо мне</a></li>
+                                        <li><a href="{% url 'contact' %}">Контакты</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -167,7 +156,43 @@
                                     </div>
                                 </div>
                                 <div class="header-login same-style">
-                                    <a href="{% url 'authentication:login' %}"><i class="icon-user icons"></i></a>     
+                                    <!--<a href="{% url 'authentication:login' %}"><i class="icon-user icons"></i></a>-->
+
+
+                                    <button class="icon-cart">
+                                        <i class="icon-user icons"></i>
+                                    </button>
+                                    <div class="shopping-cart-content">
+                                        {% if user.is_authenticated %}
+                                                    <li>
+                                                        {{ user.username }}
+                                                        <a href="{% url 'authentication:logout' %}">logout</a>
+                                                    </li>
+                                                {% else %}
+                                        <form action="{% url 'authentication:login' %}" method="post">
+                                                {% csrf_token %}
+                                                <!--{{ login_form }}-->
+                                                <h5 style="color: red" align="center">{{ attention }}</h5>
+                                                {% for error in login_form.non_field_errors %}
+                                                    <h5 style="color: red" align="center">{{error }}</h5>
+                                                {% endfor %}
+                                                <label>Username</label>
+                                                <input type="text" name="username" placeholder="">
+                                                <label>Password</label>
+                                                <input type="password" name="password" placeholder="">
+                                                <div class="button-box">
+                                                    <div class="login-toggle-btn">
+                                                        <a href="#">Forgot Password?</a>
+                                                        <button type="submit"><span>Login</span></button>
+                                                    </div>
+                                                    
+                                                </div>
+                                            </form>
+                                            {% endif %}
+                                    </div>
+
+
+
                                 </div>
                                 <div class="header-cart same-style">
                                     <button class="icon-cart">
@@ -208,7 +233,7 @@
                                             <h4>Total : <span class="shop-total">$260.00</span></h4>
                                         </div>
                                         <div class="shopping-cart-btn">
-                                            <a href="cart.html">view cart</a>
+                                            <a href="{% url 'shop:cart' %}">view cart</a>
                                             <a href="checkout.html">checkout</a>
                                         </div>
                                     </div>
@@ -342,7 +367,7 @@
 
 
 
-		<div class="service-area bg-img pt-100 pb-65">
+		<!--<div class="service-area bg-img pt-100 pb-65">
 		    <div class="container">
 		        <div class="row">
 		            <div class="col-lg-4 col-md-4">
@@ -368,59 +393,59 @@
 		            </div>
 		        </div>
 		    </div>
-		</div>
+		</div>-->
 		<div class="blog-area pb-70">
 		    <div class="container">
 		        <div class="section-title text-center mb-60">
-                    <h4>Latest News</h4>
-                    <h2>From Our Blog</h2>
+                    <h4>Последние статьи</h4>
+                    <h2>Из моего блога</h2>
                 </div>
                 <div class="row">
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-wrapper mb-30 gray-bg">
                             <div class="blog-img hover-effect">
-                                <a href="blog-details.html"><img alt="" src="{% static 'img/blog/blog-1.jpg' %}"></a>
+                                <a href="blog-details.html"><img width="370" height="237" alt="" src="{% static 'img/blog/blog1.jpg' %}"></a>
                             </div>
                             <div class="blog-content">
                                 <div class="blog-meta">
                                     <ul>
-                                        <li>By: <span>Admin</span></li>
-                                        <li>Sep 14, 2018</li>
+                                        <!--<li>By: <span>Admin</span></li>
+                                        <li>Sep 14, 2018</li>-->
                                     </ul>
                                 </div>
-                                <h4><a href="blog-details.html">Lorem ipsum dolor amet cons adipisicing elit</a></h4>
+                                <h4><a href="blog-details.html">Процесс производства изделия</a></h4>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-wrapper mb-30 gray-bg">
                             <div class="blog-img hover-effect">
-                                <a href="blog-details.html"><img alt="" src="{% static 'img/blog/blog-2.jpg' %}"></a>
+                                <a href="blog-details.html"><img width="370" height="237" alt="" src="{% static 'img/blog/blog2.jpg' %}"></a>
                             </div>
                             <div class="blog-content">
                                 <div class="blog-meta">
                                     <ul>
-                                        <li>By: <span>Admin</span></li>
-                                        <li>Sep 14, 2018</li>
+                                        <!--<li>By: <span>Admin</span></li>
+                                        <li>Sep 14, 2018</li>-->
                                     </ul>
                                 </div>
-                                <h4><a href="blog-details.html">Lorem ipsum dolor amet cons adipisicing elit</a></h4>
+                                <h4><a href="blog-details.html">Выбор кожи</a></h4>
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-4 col-md-6">
                         <div class="blog-wrapper mb-30 gray-bg">
                             <div class="blog-img hover-effect">
-                                <a href="blog-details.html"><img alt="" src="{% static 'img/blog/blog-3.jpg' %}"></a>
+                                <a href="blog-details.html"><img width="370" height="237" alt="" src="{% static 'img/blog/blog3.jpg' %}"></a>
                             </div>
                             <div class="blog-content">
                                 <div class="blog-meta">
                                     <ul>
-                                        <li>By: <span>Admin</span></li>
-                                        <li>Sep 14, 2018</li>
+                                        <!--<li>By: <span>Admin</span></li>
+                                        <li>Sep 14, 2018</li>-->
                                     </ul>
                                 </div>
-                                <h4><a href="blog-details.html">Lorem ipsum dolor amet cons adipisicing elit</a></h4>
+                                <h4><a href="blog-details.html">Кастомизация изделия</a></h4>
                             </div>
                         </div>
                     </div>
@@ -428,7 +453,7 @@
 		    </div>
 		</div>
 		<footer class="footer-area">
-            <div class="footer-top pt-80 pb-50 gray-bg-2">
+            <div class="footer-top pt-30 pb-0 gray-bg-2">
                 <div class="container">
                     <div class="row">
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
@@ -439,8 +464,8 @@
                                             <img width="300" hight="150" src="{% static 'img/logo/logo-2.png' %}" alt="">
                                         </a>
                                     </div>
-                                    <p>Lorem ipsum dolor sit amet, co adipisi elit, sed eiusmod tempor incididunt ut labore et dolore</p>
-                                    <div class="social-icon">
+                                    <!--<p>Каждое изделие производится вручную специально для вас</p>-->
+                                    <!--<div class="social-icon">
                                         <ul>
                                             <li><a href="#"><i class="icon-social-twitter"></i></a></li>
                                             <li><a href="#"><i class="icon-social-instagram"></i></a></li>
@@ -448,13 +473,14 @@
                                             <li><a href="#"><i class="icon-social-skype"></i></a></li>
                                             <li><a href="#"><i class="icon-social-dribbble"></i></a></li>
                                         </ul>
-                                    </div>
+                                    </div>-->
                                 </div>
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-3 col-md-6 col-sm-6">
-                            <div class="footer-widget mb-30 pl-50">
-                                <h4 class="footer-title">USEFUL LINKS</h4>
+                            <div class="footer-widget mb-30 pl-70">
+                                <p>Каждое изделие производится вручную специально для вас</p>
+                                <!--<h4 class="footer-title">USEFUL LINKS</h4>
                                 <div class="footer-content">
                                     <ul>
                                         <li><a href="#">Help & Contact Us</a></li>
@@ -462,12 +488,21 @@
                                         <li><a href="#">Online Stores</a></li>
                                         <li><a href="#">Terms & Conditions</a></li>
                                     </ul>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-2 col-md-6 col-sm-6">
-                            <div class="footer-widget mb-30 pl-70">
-                                <h4 class="footer-title">HELP</h4>
+                            <div class="footer-widget mb-30 pl-50">
+                                <div class="social-icon">
+                                    <ul>
+                                        <li><a href="#"><i class="icon-social-twitter"></i></a></li>
+                                        <li><a href="#"><i class="icon-social-instagram"></i></a></li>
+                                        <li><a href="#"><i class="icon-social-linkedin"></i></a></li>
+                                        <li><a href="#"><i class="icon-social-skype"></i></a></li>
+                                        <li><a href="#"><i class="icon-social-dribbble"></i></a></li>
+                                    </ul>
+                                </div>
+                                <!--<h4 class="footer-title">HELP</h4>
                                 <div class="footer-content">
                                     <ul>
                                         <li><a href="#">Faq's </a></li>
@@ -475,31 +510,31 @@
                                         <li><a href="#">Order Traking</a></li>
                                         <li><a href="#">Returns </a></li>
                                     </ul>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                         <div class="col-xl-3 col-lg-4 col-md-6 col-sm-6">
                             <div class="footer-widget">
                                 <div class="newsletter-wrapper">
-                                    <p>Subscribe to our newsletter and get 10% off your first purchase..</p>
+                                    <!--<p>Subscribe to our newsletter and get 10% off your first purchase..</p>
                                     <div class="newsletter-style">
                                         <div id="mc_embed_signup" class="subscribe-form">
                                             <form action="#" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" class="validate" target="_blank" novalidate>
                                                 <div id="mc_embed_signup_scroll" class="mc-form">
-                                                    <input type="email" value="" name="EMAIL" class="email" placeholder="Your mail address" required>
+                                                    <input type="email" value="" name="EMAIL" class="email" placeholder="Your mail address" required>-->
                                                     <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                                                    <div class="mc-news" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div>
+                                                    <!--<div class="mc-news" aria-hidden="true"><input type="text" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef" tabindex="-1" value=""></div>
                                                     <div class="clear"><input type="submit" value="SEND" name="subscribe" id="mc-embedded-subscribe" class="button"></div>
                                                 </div>
                                             </form>
                                         </div>
-                                    </div>
+                                    </div>-->
                                 </div>
-                                <div class="payment-img">
+                                <!--<div class="payment-img">
                                     <a href="index.html">
                                         <img src="{% static 'img/icon-img/payment.png' %}" alt="">
                                     </a>
-                                </div>
+                                </div>-->
                             </div>
                         </div>
                     </div>

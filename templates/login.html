@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
-{% block title %}Home{% endblock title %}
+{% block title %}Вход{% endblock title %}
+
+{% block home %}
+<li><a href="{% url 'index' %}">ГЛАВНАЯ</a></li>
+{% endblock home %}
+
 {% block container %}
 
 
